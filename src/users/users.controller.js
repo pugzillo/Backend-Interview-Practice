@@ -1,18 +1,37 @@
 const service = require("./users.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary"); // handles async errors insteads of using try/catch
 
+async function userExists(req, res, next) {
+  const userId = req.params.userId;
+  const user = await service.read(userId);
+  if (user) {
+    res.locals.user = user;
+    return next();
+  }
+  next({ error: 404, message: "User does not exist" });
+}
+
 async function list(req, res) {
   const users = await service.list();
   res.json({ users });
 }
 
-async function read(req, res) {
-  const userId = req.params.userId; 
-  const user = await service.read(userId);
-  res.json({ user });
+async function read(req, res, next) {
+  const { user: data } = res.locals;
+  res.json({ data });
+}
+
+async function update(req, res, next) {
+    const updatedUser = {
+        ...req.body.data,
+        user_id: res.locals.user.user_id,
+    }
+    const user = await service.update(updatedUser);
+    res.json({ user })
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  read,
+  read: [asyncErrorBoundary(userExists), asyncErrorBoundary(read)],
+  update: [asyncErrorBoundary(userExists), asyncErrorBoundary(update)],
 };

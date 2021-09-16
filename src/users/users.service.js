@@ -1,14 +1,23 @@
-const knex = require('../db/connection');
+const knex = require("../db/connection");
 
 function list() {
-    return knex.table("users").select("*");
+  return knex.table("users").select("*");
 }
 
 function read(user_id) {
-    return knex.table("users").select("*").where({ user_id });
+  return knex.table("users").select("*").where({ user_id }).first();
+}
+
+function update(updatedUser) {
+  return knex
+    .table("users")
+    .where({ user_id: updatedUser.user_id })
+    .update(updatedUser, "*")
+    .then(updatedRecords => updatedRecords[0]);
 }
 
 module.exports = {
-    list,
-    read,  
+  list,
+  read,
+  update,
 };
