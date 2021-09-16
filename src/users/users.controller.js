@@ -30,8 +30,15 @@ async function update(req, res, next) {
     res.json({ user })
 }
 
+async function destroy(req, res, next) { 
+    const userId = res.locals.user.user_id
+    const data = await service.destroy(userId);
+    res.sendStatus(204);
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(userExists), asyncErrorBoundary(read)],
   update: [asyncErrorBoundary(userExists), asyncErrorBoundary(update)],
+  delete: [asyncErrorBoundary(userExists),destroy],
 };

@@ -6,6 +6,7 @@ router
   .route("/:userId")
   .get(controller.read)
   .put(controller.update)
+  .delete(controller.delete)
   .all(methodNotAllowed);
 router.route("/").get(controller.list).all(methodNotAllowed);
 
