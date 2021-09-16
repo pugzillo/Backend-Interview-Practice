@@ -2,7 +2,6 @@ const service = require("./users.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary"); // handles async errors insteads of using try/catch
 
 async function list(req, res) {
-  // res.send("OK");
   const users = await service.list();
   res.json({ users });
 }
