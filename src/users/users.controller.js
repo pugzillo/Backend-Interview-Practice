@@ -22,23 +22,37 @@ async function read(req, res, next) {
 }
 
 async function update(req, res, next) {
-    const updatedUser = {
-        ...req.body.data,
-        user_id: res.locals.user.user_id,
-    }
-    const user = await service.update(updatedUser);
-    res.json({ user })
+  const updatedUser = {
+    ...req.body.data,
+    user_id: res.locals.user.user_id,
+  };
+  const user = await service.update(updatedUser);
+  res.json({ user });
 }
 
-async function destroy(req, res, next) { 
-    const userId = res.locals.user.user_id
-    const data = await service.destroy(userId);
-    res.sendStatus(204);
+async function destroy(req, res, next) {
+  const userId = res.locals.user.user_id;
+  const data = await service.destroy(userId);
+  res.sendStatus(204);
+}
+
+async function patch(req, res, next) {
+  const userId = res.locals.user.user_id;
+  const updatedData = req.body.data;
+  const updatedUser = await service.patch(userId, updatedData);
+  res.json({ updatedUser });
+}
+
+async function patch(req, res, next) {
+    const userId = res.locals.user.user_id;
+    const updatedData = req.body.data;
+    const updatedUser = await service.patch(userId, updatedData);
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(userExists), asyncErrorBoundary(read)],
   update: [asyncErrorBoundary(userExists), asyncErrorBoundary(update)],
-  delete: [asyncErrorBoundary(userExists),destroy],
+  delete: [asyncErrorBoundary(userExists), asyncErrorBoundary(destroy)],
+  patch: [asyncErrorBoundary(userExists), asyncErrorBoundary(patch)],
 };

@@ -13,11 +13,21 @@ function update(updatedUser) {
     .table("users")
     .where({ user_id: updatedUser.user_id })
     .update(updatedUser, "*")
-    .then(updatedRecords => updatedRecords[0]);
+    .then((updatedRecords) => updatedRecords[0]);
 }
 
 function destroy(user_id) {
-    return knex.table("users").where({ user_id }).del();
+  return knex.table("users").where({ user_id }).del();
+}
+
+function patch(user_id, updatedData) {
+  return knex
+    .table("users")
+    .where({ user_id })
+    .update(updatedData)
+    .then((updatedRecords) =>
+      knex.table("users").select("*").where({ user_id }).first()
+    );
 }
 
 module.exports = {
@@ -25,4 +35,5 @@ module.exports = {
   read,
   update,
   destroy,
+  patch,
 };
