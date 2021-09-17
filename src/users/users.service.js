@@ -17,7 +17,7 @@ function update(updatedUser) {
 }
 
 function destroy(user_id) {
-  return knex.table("users").where({ user_id }).del();
+  return knex.table("users").select("*").where({ user_id }).del();
 }
 
 function patch(user_id, updatedData) {
