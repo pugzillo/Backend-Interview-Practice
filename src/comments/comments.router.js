@@ -7,6 +7,7 @@ router
   .get(controller.read)
   .put(controller.update)
   .patch(controller.patch)
+  .delete(controller.destroy)
   .all(methodNotAllowed);
 router.route("/").get(controller.list).all(methodNotAllowed);
 

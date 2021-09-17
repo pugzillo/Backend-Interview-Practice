@@ -29,9 +29,14 @@ function patch(comment_id, patchedComment) {
     );
 }
 
+function destroy(comment_id) {
+  return knex.table("comments").where({ comment_id }).del();
+}
+
 module.exports = {
   list,
   read,
   update,
   patch,
+  destroy,
 };

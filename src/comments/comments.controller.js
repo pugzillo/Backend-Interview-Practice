@@ -40,9 +40,16 @@ async function patch(req, res) {
   res.json({ data });
 }
 
+async function destroy(req, res) {
+  const commentId = res.locals.comment.comment_id;
+  await service.destroy(commentId);
+  res.sendStatus(204);
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [commentExists, read],
   update: [commentExists, update],
   patch: [commentExists, patch],
+  destroy: [commentExists, destroy],
 };
