@@ -27,7 +27,14 @@ async function read(req, res, next) {
   res.json({ comment });
 }
 
+async function update(req, res, next) {
+  const updatedComment = req.body.data;
+  const data = await service.update(updatedComment);
+  res.json({ data });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [commentExists, read],
+  update: [commentExists, update],
 };

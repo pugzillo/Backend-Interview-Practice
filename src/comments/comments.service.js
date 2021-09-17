@@ -11,7 +11,16 @@ function read(comment_id) {
   return knex.table("comments").where({ comment_id }).select("*").first();
 }
 
+function update(updatedComment) {
+  return knex
+    .table("comments")
+    .where({ comment_id: updatedComment.comment_id })
+    .update(updatedComment, "*")
+    .then((updatedRecord) => updatedRecord[0]);
+}
+
 module.exports = {
   list,
   read,
+  update,
 };
