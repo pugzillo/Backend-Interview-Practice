@@ -1,7 +1,9 @@
 const router = require("express").Router({ mergeParams: true });
 const controller = require("./posts.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
+const commentsRouter = require("../comments/comments.router");
 
+router.use("/:postId/comments", commentsRouter);
 router
   .route("/:postId")
   .get(controller.read)
