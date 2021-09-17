@@ -33,8 +33,16 @@ async function update(req, res, next) {
   res.json({ data });
 }
 
+async function patch(req, res) {
+  const commentId = res.locals.comment.comment_id;
+  const patchedComment = req.body.data;
+  const data = await service.patch(commentId, patchedComment);
+  res.json({ data });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [commentExists, read],
   update: [commentExists, update],
+  patch: [commentExists, patch],
 };

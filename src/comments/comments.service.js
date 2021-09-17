@@ -19,8 +19,19 @@ function update(updatedComment) {
     .then((updatedRecord) => updatedRecord[0]);
 }
 
+function patch(comment_id, patchedComment) {
+  return knex
+    .table("comments")
+    .where({ comment_id })
+    .update(patchedComment)
+    .then((updatedRecord) =>
+      knex.table("comments").where({ comment_id }).select("*").first()
+    );
+}
+
 module.exports = {
   list,
   read,
   update,
+  patch,
 };

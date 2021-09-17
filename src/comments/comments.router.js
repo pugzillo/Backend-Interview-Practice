@@ -6,6 +6,7 @@ router
   .route("/:commentId")
   .get(controller.read)
   .put(controller.update)
+  .patch(controller.patch)
   .all(methodNotAllowed);
 router.route("/").get(controller.list).all(methodNotAllowed);
 
